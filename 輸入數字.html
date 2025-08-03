@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>未來猜數字遊戲</title>
+  <style>
+    body {
+      background: linear-gradient(120deg, #000428, #004e92);
+      font-family: "Orbitron", sans-serif;
+      text-align: center;
+      padding-top: 80px;
+      color: #00ffff;
+    }
+
+    h1 {
+      color: #00ffff;
+      font-size: 36px;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+
+    .game-box {
+      background: rgba(0, 0, 0, 0.5);
+      display: inline-block;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00ffff;
+      border: 1px solid #00ffff;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: 2px solid #00ffff;
+      width: 100px;
+      background: black;
+      color: #00ffff;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #00ffff;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+
+    button:hover {
+      background-color: #00cccc;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>🧬 未來猜數字遊戲 🧬</h1>
+  <div class="game-box">
+    <p id="rangeDisplay">請猜一個 1 到 100 的數字：</p>
+    <input type="number" id="guessInput" min="1" max="100">
+    <button onclick="makeGuess()">猜！</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    let min = 1;
+    let max = 100;
+    let secret = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    function makeGuess() {
+      const input = document.getElementById("guessInput");
+      const msg = document.getElementById("message");
+      const display = document.getElementById("rangeDisplay");
+
+      const guess = parseInt(input.value);
+      if (isNaN(guess) || guess < min || guess > max) {
+        msg.textContent = `請輸入 ${min} 到 ${max} 之間的數字！`;
+        return;
+      }
+
+      if (guess < secret) {
+        msg.textContent = "太小了！";
+        if (guess >= min) min = guess;
+      } else if (guess > secret) {
+        msg.textContent = "太大了！";
+        if (guess <= max) max = guess;
+      } else {
+        msg.textContent = "🚀 YOU WIN！🚀";
+        input.disabled = true;
+        return;
+      }
+
+      display.textContent = `請猜一個 ${min} 到 ${max} 的數字：`;
+      input.value = "";
+      input.focus();
+    }
+  </script>
+</body>
+</html>
